@@ -21,8 +21,58 @@ const style = {
 
 export default function NewMail() {
     const [open, setOpen] = React.useState(false);
+    const [recipient, setRecipient] = React.useState('');
+    const [subject, setSubject] = React.useState('');
+    const [message, setMessage] = React.useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleSend = async() => {
+    
+            const messageData = {
+                recipient: recipient,
+                subject: subject,
+                message: message
+            };
+            // console.log('Sending message to backend:', { recipient, subject, message });
+            console.log('Sending message to backend:', messageData);
+            console.log(API)
+           const data= await fetch(`${API}/user/inbox`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(messageData),
+            })
+            
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to send message');
+                    
+                }
+                // Handle success
+                console.log('Message sent successfully');
+                alert("Message successfully sent")
+                // Example: Close the modal after sending
+                handleClose();
+            })
+            .catch(error => {
+                // Handle error
+                console.log('Error sending message:', error);
+            });
+
+            console.log(data);
+        
+        
+        // Here you can perform actions to send the message to the backend
+      
+        // Example of resetting form fields after sending
+        setRecipient('');
+        setSubject('');
+        setMessage('');
+        handleClose(); // Closing the modal after sending
+    };
+
 
     return (
         <div>
