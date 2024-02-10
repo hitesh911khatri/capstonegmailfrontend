@@ -26,7 +26,7 @@ function MailPage() {
     const mailCount = emailData.length;
 
     const getEmailData = () => {
-        fetch(`${API}/inbox`, {
+        fetch(`${API}/user/inbox`, {
             method: "GET",
             headers: {
                 "x-auth-token": localStorage.getItem("token")
